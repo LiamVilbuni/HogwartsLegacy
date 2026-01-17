@@ -14,12 +14,12 @@ def create_tables():
                 name TEXT,
                 avatar TEXT
             );
-            CREATE TABLE IF NOT EXISTS content (
+            CREATE TABLE IF NOT EXISTS chat (
                 user_id TEXT,
-                content_id TEXT UNIQUE,
-                content_name TEXT,
-                content_data TEXT,
-                result TEXT,
+                chat_id TEXT UNIQUE,
+                chat_name TEXT,
+                chat_data TEXT,
+                chat_analysis TEXT,
                 FOREIGN KEY (user_id) REFERENCES users(id)
             );
         """)
@@ -39,17 +39,17 @@ def mutate(query, params=()):
         cur.fetchall()
         conn.commit()
 
-def add_content(user_id, content_id, content_name, content_data, result):
-    mutate("INSERT INTO content VALUES (?, ?, ?, ?, ?)", (user_id, content_id, content_name, content_data, result))
+def add_chat(user_id, chat_id, chat_name, chat_data, result):
+    mutate("INSERT INTO chat VALUES (?, ?, ?, ?, ?)", (user_id, chat_id, chat_name, chat_data, result))
 
-def delete_content(user_id, content_id):
-    mutate("DELETE FROM content WHERE user_id = ? AND content_id = ?", (user_id, content_id))
+def delete_chat(user_id, chat_id):
+    mutate("DELETE FROM chat WHERE user_id = ? AND chat_id = ?", (user_id, chat_id))
 
-def get_content(user_id):
-    return query("SELECT * FROM content WHERE user_id = ?", (user_id, ))
+def get_chat(user_id):
+    return query("SELECT * FROM chat WHERE user_id = ?", (user_id, ))
 
-def get_content_by_id(user_id, content_id):
-    return query("SELECT * FROM content WHERE user_id = ? AND content_id = ?", (user_id, content_id))
+def get_chat_by_id(user_id, chat_id):
+    return query("SELECT * FROM chat WHERE user_id = ? AND chat_id = ?", (user_id, chat_id))
 
-def get_content_by_name(user_id, content_name):
-    return query("SELECT * FROM content WHERE user_id = ? AND content_name = ?", (user_id, content_name))
+def get_chat_by_name(user_id, chat_name):
+    return query("SELECT * FROM chat WHERE user_id = ? AND chat_name = ?", (user_id, chat_name))

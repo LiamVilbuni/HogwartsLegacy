@@ -2,3 +2,4 @@ venv
 *.zip
 .env
 secret
+__pycache__

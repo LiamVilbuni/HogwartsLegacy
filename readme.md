@@ -31,12 +31,12 @@
 - name
 - avatar
 
-### Uploaded Content Table
+### Chat Table
 - user_id (Foreign Key)
-- content_id (Primary Key)
-- content_name
-- content_data
-- result
+- chat_id (Primary Key)
+- chat_name
+- chat_data
+- chat_analysis
 
 ### Model Structure
     https://www.mit.edu/~ecprice/wordlist.10000

@@ -24,7 +24,7 @@ login_manager.login_view = '/' # type: ignore
 @login_manager.user_loader
 def load_user(userid):
     try:
-        u = query("SELECT * FROM users where id = %s", (userid,))[0]
+        u = query("SELECT * FROM users where id = ?", (userid,))[0]
         user = User(id=u[0], email=u[1], name=u[2], avatar=u[3]) # type: ignore
         return user
     except IndexError:
@@ -51,4 +51,4 @@ def dated_url_for(endpoint, **values):
     return url_for(endpoint, **values)
 
 if __name__ == "__main__":
-    app.run(debug=False, port=5000, host='localhost')
+    app.run(debug=True, port=5000, host='localhost')
