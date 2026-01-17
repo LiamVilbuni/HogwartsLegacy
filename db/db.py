@@ -45,7 +45,7 @@ def add_chat(user_id, chat_id, chat_name, chat_data, result):
 def delete_chat(user_id, chat_id):
     mutate("DELETE FROM chat WHERE user_id = ? AND chat_id = ?", (user_id, chat_id))
 
-def get_chat(user_id):
+def get_chats(user_id):
     return query("SELECT * FROM chat WHERE user_id = ?", (user_id, ))
 
 def get_chat_by_id(user_id, chat_id):

@@ -1,0 +1,155 @@
+:root {
+    --bg: #0a0a0b;
+    --gold: #c5a059;
+    --gold-glow: rgba(197, 160, 89, 0.3);
+    --parchment: #e2d1c3;
+    --gryff: #740001;
+    --slyth: #1a472a;
+    --raven: #0e1a40;
+    --huff: #ecb939;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--parchment);
+    font-family: 'Spectral', serif;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background: rgba(0,0,0,0.8);
+    border-bottom: 1px solid var(--gold);
+    backdrop-filter: blur(10px);
+}
+
+.nav-logo {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px var(--gold-glow);
+}
+
+.profile-circle {
+    width: 45px;
+    height: 45px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.nav__avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: fadeInUp 0.8s ease-out; }
+
+.hero{
+    text-align: center;
+    align-items: center;
+}
+
+.house-grid{
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 60px 20px;
+}
+
+/* Dashboard Cards */
+.dashboard{
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.chat-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #161618;
+    margin: 15px auto;
+    padding: 20px 30px;
+    border-radius: 12px;
+    max-width: 800px;
+    border: 1px solid #222;
+    transition: 0.3s;
+}
+
+.chat-card:hover {
+    border-color: var(--gold);
+    transform: scale(1.02);
+    box-shadow: 0 0 20px var(--gold-glow);
+}
+
+.delete-btn {
+    color: #ff4444;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 0.9rem;
+}
+
+/* Summary Grid */
+.summary-columns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 40px;
+}
+
+.house-col {
+    background: rgba(255,255,255,0.03);
+    border-radius: 15px;
+    padding: 20px;
+    min-height: 500px;
+    border-top: 5px solid transparent;
+}
+
+.gryffindor { border-color: var(--gryff); box-shadow: 0 10px 30px rgba(116, 0, 1, 0.15); }
+.slytherin { border-color: var(--slyth); box-shadow: 0 10px 30px rgba(26, 71, 42, 0.15); }
+.ravenclaw { border-color: var(--raven); box-shadow: 0 10px 30px rgba(14, 26, 64, 0.15); }
+.hufflepuff { border-color: var(--huff); box-shadow: 0 10px 30px rgba(236, 185, 57, 0.15); }
+
+.person-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.p-acc {
+    font-family: 'Cinzel';
+    color: var(--gold);
+    font-weight: bold;
+}
+
+/* Magic Button */
+.magic-button {
+    display: inline-block;
+    padding: 15px 40px;
+    background: var(--gold);
+    color: black;
+    text-decoration: none;
+    font-family: 'Cinzel';
+    font-weight: bold;
+    border-radius: 50px;
+    transition: 0.4s;
+    box-shadow: 0 0 15px var(--gold-glow);
+}
+
+.magic-button:hover {
+    box-shadow: 0 0 30px var(--gold);
+    transform: translateY(-3px);
+}

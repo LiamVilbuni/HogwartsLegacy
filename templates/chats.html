@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="dashboard">
+
+    <div class="dash-header">
+        <div id="dropZone" style="border:2px dashed #aaa; padding:20px;">
+        Drag & drop a .txt file here or click to upload
+        </div>
+
+        <input type="file" id="txtUpload" accept=".txt" hidden>
+    </div>
+    
+    <div class="history-container">
+        <h2>Your Magical Archives</h2>
+        {% for chat in chats %}
+        <div class="chat-card">
+            <div class="chat-meta">
+                <span class="chat-icon">📜</span>
+                <div>
+                    <h4>{{ chat.name }}</h4>
+                    <small>{{ chat.date }}</small>
+                </div>
+            </div>
+            <div class="chat-actions">
+                <a href="/summary/{{ chat.id }}" class="view-btn">View Result</a>
+                <a href="/delete/{{ chat.id }}" class="delete-btn">Delete</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+    const dropZone = document.getElementById('dropZone');
+    const input = document.getElementById('txtUpload');
+
+    dropZone.onclick = () => input.click();
+
+    dropZone.ondragover = e => e.preventDefault();
+
+    dropZone.ondrop = e => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (file && file.name.endsWith('.txt')) {
+        input.files = e.dataTransfer.files;
+        dropZone.textContent = file.name;
+        } else {
+        alert('Please upload a .txt file only.');
+        }
+    };
+
+    // When a file is added, start processing
+    
+
+
+    </script>
+</div>
+{% endblock %}

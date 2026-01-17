@@ -11,6 +11,8 @@ from utils.env import env
 from db.db import create_tables, query 
 from routes.auth import auth
 from routes.landing import landing
+from routes.chats import chats
+from routes.chat import chat
 
 create_tables()
 
@@ -36,6 +38,8 @@ def health():
 
 app.register_blueprint(auth)
 app.register_blueprint(landing)
+app.register_blueprint(chats)
+app.register_blueprint(chat)
 
 # Refresh CSS
 @app.context_processor
