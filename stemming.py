@@ -29,19 +29,19 @@ categorize(remove_timestamp(read_raw()))
 
 for key,val in messages.items():
     list_of_sentences=val
-    for sentence in list_of_sentences:
-        text=sentence
-        # Word Splitting
-        tokens = word_tokenize(text.lower())
-        print(f"Tokens: {tokens}")
+    sentence=" ".join(list_of_sentences)
+    text=sentence
 
-        # Stop Word Removal
-        stop_words = set(stopwords.words('english'))
-        filtered_tokens = [w for w in tokens if w not in stop_words and w.isalnum()]
-        print(f"After removing stop words: {filtered_tokens}")
+    # Word Splitting
+    tokens = word_tokenize(text.lower())
 
-        # Stemming
-        stemmer = PorterStemmer()
-        stemmed_tokens = [stemmer.stem(w) for w in filtered_tokens]
-        print(f"Stemmed Tokens: {stemmed_tokens}")
+    # Stop Word Removal
+    stop_words = set(stopwords.words('english'))
+    filtered_tokens = [w for w in tokens if w not in stop_words and w.isalnum()]
+
+    # Stemming
+    stemmer = PorterStemmer()
+    stemmed_tokens = [stemmer.stem(w) for w in filtered_tokens]
+    print(f"{key}'s Stemmed Tokens: {stemmed_tokens}")
         
+
