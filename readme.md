@@ -24,5 +24,19 @@
     uploaded-files
     results
 
+## Database Structure
+### User Table
+- user_id (Primary Key)
+- email
+- name
+- avatar
+
+### Uploaded Content Table
+- user_id (Foreign Key)
+- content_id (Primary Key)
+- content_name
+- content_data
+- result
+
 ### Model Structure
     https://www.mit.edu/~ecprice/wordlist.10000
