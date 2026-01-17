@@ -1,5 +1,4 @@
 venv
-*.zip
 .env
-secret
 __pycache__
+sortinghat.db

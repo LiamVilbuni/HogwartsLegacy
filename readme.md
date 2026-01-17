@@ -1,4 +1,19 @@
 # HogwartsLegacy
+A website that analyzes uploaded chat data from a whatsapp group and assigns each user to a Hogwarts house based on their chat behavior.
+
+## Features
+- User Authentication (Login with Google)
+- Upload WhatsApp chat data
+- Analyze chat data to determine Hogwarts house for each user
+
+## Technologies Used
+- Frontend: HTML, CSS, JavaScript
+- Backend: Flask (Python)
+- Database: SQLite
+- Authentication: Firebase Google Auth
+- Data Analysis: Custom Python scripts
+
+## 
 
 ## Website Structure
 
