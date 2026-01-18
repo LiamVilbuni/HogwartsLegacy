@@ -101,6 +101,25 @@ body {
     font-size: 0.9rem;
 }
 
+#page-loader {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 9999;
+
+    display: none;              /* hidden by default */
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-content {
+    text-align: center;
+}
+
+.loader-content img {
+    width: 80px;
+}
+
 /* Summary Grid */
 .summary-columns {
     display: grid;

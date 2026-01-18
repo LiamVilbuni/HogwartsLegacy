@@ -1,56 +1,100 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="dashboard">
-
-    <div class="dash-header">
-        <div id="dropZone" style="border:2px dashed #aaa; padding:20px;">
-        Drag & drop a .txt file here or click to upload
-        </div>
-
-        <input type="file" id="txtUpload" accept=".txt" hidden>
+  <div class="dash-header">
+    <div id="dropZone" style="border: 2px dashed #aaa; padding: 20px">
+      Drag & drop a .txt file here or click to upload
     </div>
-    
-    <div class="history-container">
-        <h2>Your Magical Archives</h2>
-        {% for chat in chats %}
-        <div class="chat-card">
-            <div class="chat-meta">
-                <span class="chat-icon">📜</span>
-                <div>
-                    <h4>{{ chat.name }}</h4>
-                    <small>{{ chat.date }}</small>
-                </div>
-            </div>
-            <div class="chat-actions">
-                <a href="/summary/{{ chat.id }}" class="view-btn">View Result</a>
-                <a href="/delete/{{ chat.id }}" class="delete-btn">Delete</a>
-            </div>
-        </div>
-        {% endfor %}
+
+    <input type="file" id="txtUpload" accept=".txt" hidden />
+  </div>
+
+  <div id="page-loader">
+    <div class="loader-content">
+      <img
+        src="{{ url_for('static', filename='assets/images/sortinghat.gif') }}"
+        alt="Sorting"
+      />
     </div>
-    <script>
-    const dropZone = document.getElementById('dropZone');
-    const input = document.getElementById('txtUpload');
+  </div>
+
+  <div class="history-container">
+    <h2>Your Magical Archives</h2>
+    {% for chat in chats %}
+    <div class="chat-card">
+      <div class="chat-meta">
+        <span class="chat-icon">📜</span>
+        <div>
+          <h4>{{ chat[2] }}</h4>
+        </div>
+      </div>
+      <div class="chat-actions">
+        <a href="/chats/{{ chat[1] }}" class="view-btn">View Result</a>
+        <a href="/chats/delete/{{ chat[1] }}" class="delete-btn">Delete</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <script>
+    const dropZone = document.getElementById("dropZone");
+    const input = document.getElementById("txtUpload");
+    const loader = document.getElementById("page-loader");
 
     dropZone.onclick = () => input.click();
 
-    dropZone.ondragover = e => e.preventDefault();
+    dropZone.ondragover = (e) => e.preventDefault();
 
-    dropZone.ondrop = e => {
-        e.preventDefault();
-        const file = e.dataTransfer.files[0];
-        if (file && file.name.endsWith('.txt')) {
+    dropZone.ondrop = (e) => {
+      e.preventDefault();
+      const file = e.dataTransfer.files[0];
+      if (file && file.name.endsWith(".txt")) {
         input.files = e.dataTransfer.files;
         dropZone.textContent = file.name;
-        } else {
-        alert('Please upload a .txt file only.');
-        }
+      } else {
+        alert("Please upload a .txt file only.");
+      }
     };
 
-    // When a file is added, start processing
-    
+    input.addEventListener("change", () => {
+      const file = input.files[0];
+      if (!file) return;
 
+      dropZone.textContent = file.name;
 
-    </script>
+      console.log("File selected:", file);
+
+      uploadFile(file);
+    });
+
+    function uploadFile(file) {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      loader.style.display = "flex";
+
+      fetch("/chats/analyse", {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Upload failed");
+          return res.json();
+        })
+        .then((data) => {
+          if (data.message === "Chat uploaded successfully") {
+            const chatId = data.chat_id;
+            window.location.href = `/chats/${chatId}`;
+          } else {
+            window.location.href = "/error.html";
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          window.location.href = "/error.html";
+        })
+        .finally(() => {
+          loader.style.display = "none";
+        });
+    }
+  </script>
 </div>
 {% endblock %}

@@ -10,7 +10,9 @@ chat = Blueprint('chat', __name__, template_folder='templates')
 @login_required
 def viewChat(chat_id):
     chat = get_chat_by_id(current_user.id, chat_id)
+    house_data = {'Gryffindor': ['Harry', 'Ron'], 'Hufflepuff': [''], 'Ravenclaw': [''], 'Slytherin': ['Draco']}
+
     if chat:
-        return render_template('chat.html', chat=chat[0])
+        return render_template('chat.html', user_logged_in = True, house_data = house_data, user_avatar = current_user.get_avatar(), chat=chat, current_user=current_user)
     else:
         return "Chat not found", 404
