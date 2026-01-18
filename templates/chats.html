@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hogwarts Legacy - Chats</title>
+    <title>Hogwarts Legacy</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -103,7 +103,6 @@
           const formData = new FormData();
           formData.append('file', file);
 
-          // Show sorting overlay
           document.getElementById('sorting-overlay').style.display = 'flex';
 
           fetch('/chats/analyse', {
