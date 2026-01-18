@@ -6,3 +6,5 @@ flask_login
 requests
 oauthlib
 dotenv
+scikit-learn
+sentence-transformers

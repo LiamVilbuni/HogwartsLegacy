@@ -17,7 +17,9 @@ def create_tables():
             CREATE TABLE IF NOT EXISTS chat (
                 user_id TEXT,
                 chat_id TEXT UNIQUE,
+                chat_time TEXT,
                 chat_name TEXT,
+                chat_len BIGINT,
                 chat_data TEXT,
                 chat_analysis TEXT,
                 FOREIGN KEY (user_id) REFERENCES users(id)
@@ -39,8 +41,8 @@ def mutate(query, params=()):
         cur.fetchall()
         conn.commit()
 
-def add_chat(user_id, chat_id, chat_name, chat_data, result):
-    mutate("INSERT INTO chat VALUES (?, ?, ?, ?, ?)", (user_id, chat_id, chat_name, chat_data, result))
+def add_chat(user_id, chat_id, chat_time, chat_name, chat_len, chat_data, result):
+    mutate("INSERT INTO chat VALUES (?, ?, ?, ?, ?, ?, ?)", (user_id, chat_id, chat_time, chat_name, chat_len, chat_data, result))
 
 def delete_chat(user_id, chat_id):
     mutate("DELETE FROM chat WHERE user_id = ? AND chat_id = ?", (user_id, chat_id))

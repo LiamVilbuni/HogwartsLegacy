@@ -1,28 +1,54 @@
-{% extends "base.html" %} {% block content %}
-<section class="hero">
-  <h1 class="glow-text">The Digital Sorting Hat</h1>
-  <p>
-    Upload your WhatsApp history. Let the ancient algorithms read your soul.
-  </p>
-  <a href="/chats" class="magic-button">Enter The Great Hall</a>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hogwarts Legacy - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="brand" onclick="window.location.href='/'">Hogwarts Legacy</div>
+        <div class="nav-actions">
+            <button id="auth-btn" onclick="window.location.href='/auth/login'" style="display: {{'none' if user_logged_in else 'block'}}">Login</button>
+            <div id="user-avatar" class="avatar" title="Click to Logout" onclick="window.location.href='/auth/logout'" style="display: {{'block' if user_logged_in else 'none'}}">
+                <img src="{{user_avatar}}" alt="User Avatar">
+            </div>
+        </div>
+    </header>
 
-<div class="house-grid">
-  <div class="house-info gryff">
-    <h3>Gryffindor</h3>
-    <p>Values courage, bravery, and nerve.</p>
-  </div>
-  <div class="house-info slyth">
-    <h3>Slytherin</h3>
-    <p>Values ambition, cunning, and resourcefulness.</p>
-  </div>
-  <div class="house-info raven">
-    <h3>Ravenclaw</h3>
-    <p>Values intelligence, knowledge, and wit.</p>
-  </div>
-  <div class="house-info huff">
-    <h3>Hufflepuff</h3>
-    <p>Values hard work, patience, and loyalty.</p>
-  </div>
-</div>
-{% endblock %}
+    <main id="app">
+    </main>
+
+    <div id="toast">Message here</div>
+    <script>
+      const houses = [
+        { id: 'gryffindor', name: 'Gryffindor', color: '#740001', accent: '#d3a625', desc: 'Bravery, daring, nerve, and chivalry.', icon: '🦁' },
+        { id: 'slytherin', name: 'Slytherin', color: '#1a472a', accent: '#aaaaaa', desc: 'Ambition, cunning, leadership, and resourcefulness.', icon: '🐍' },
+        { id: 'ravenclaw', name: 'Ravenclaw', color: '#0e1a40', accent: '#946b2d', desc: 'Intelligence, wisdom, creativity, and wit.', icon: '🦅' },
+        { id: 'hufflepuff', name: 'Hufflepuff', color: '#ecb939', accent: '#372e29', desc: 'Hard work, patience, justice, and loyalty.', icon: '🦡' }
+      ];
+
+      const container = document.getElementById('app');
+      let housesHtml = houses.map(h => `
+          <div class="house-card house-${h.id}">
+              <span class="house-icon">${h.icon}</span>
+              <h2>${h.name}</h2>
+              <p style="color:#aaa; margin-top:0.5rem">${h.desc}</p>
+          </div>
+      `).join('');
+
+      container.innerHTML = `
+          <section style="text-align:center; padding: 4rem 0;">
+              <h1 style="font-size: 3rem; color: var(--accent-gold);">The Sorting Hat Awaits</h1>
+              <p style="max-width: 600px; margin: 1rem auto; line-height: 1.6;">
+                  Discover your true house or analyze your group dynamics with our advanced Digital Sorting Hat. 
+                  Upload your chat logs to see where everyone belongs.
+              </p>
+              <button class="btn" onclick="window.location.href='/chats'">Start Sorting</button>
+          </section>
+          <section class="houses-grid">${housesHtml}</section>
+      `;
+    </script>
+</body>
+</html>

@@ -8,7 +8,7 @@ def read_raw():
 
 
 def categorize(lines):
-    
+    messages.clear()
     name = ""
     runningMessage = ""
     
@@ -34,6 +34,7 @@ def categorize(lines):
     else:
         messages[name] = [runningMessage] 
 
+    return messages
 
 def get_messages():
     categorize(read_raw())

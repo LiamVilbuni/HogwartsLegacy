@@ -1,19 +1,55 @@
-{% extends "base.html" %} {% block content %}
-<h2 class="summary-title">Sorting Ceremony Results</h2>
-<div class="summary-columns">
-  {% for house, people in house_data.items() %}
-  <div class="house-col {{ house|lower }}">
-    <div class="col-header">
-      <h3>{{ house }}</h3>
-    </div>
-    <div class="people-list">
-      {% for person in people %}
-      <div class="person-item">
-        <span class="p-name">{{ person }}</span>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-  {% endfor %}
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hogwarts Legacy - Sorting Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="brand" onclick="window.location.href='/'">Hogwarts Legacy</div>
+        <div class="nav-actions">
+            <button id="auth-btn" style="display: {{'none' if user_logged_in else 'block'}}" onclick="window.location.href='/auth/login'">Login</button>
+            <div id="user-avatar" class="avatar" title="Click to Logout" style="display: {{'block' if user_logged_in else 'none'}}">
+                <img src="{{user_avatar}}" onClick="window.location.href='/auth/logout'" alt="User Avatar">
+            </div>
+        </div>
+    </header>
+
+    <main id="app">
+        <div style="margin-bottom: 2rem;">
+            <button class="btn" style="background:#333; color:#fff" onclick="window.location.href='/chats'">← Back to Archive</button>
+        </div>
+        
+        <div class="detail-header">
+            <h1>Sorting Results</h1>
+        </div>
+
+        <hr style="border:0; border-top:1px solid #333; margin: 2rem 0;">
+        
+        <h2 style="text-align:center;">House Summary</h2>
+        <div class="summary-grid" id="summary-container">
+          {% for h, p in house_data.items() %}
+            <div class="summary-column">
+                <div class="summary-header" style="background-color: {{ houses[h].color }}">{{ houses[h].name }}</div>
+                <ul class="summary-content">
+                  {% for m in p %}
+                      <li>{{ m }}</li>
+                  {% endfor %}
+                </ul>
+            </div>
+          {% endfor %}
+        </div>
+    </main>
+
+    <div id="toast">Message here</div>
+
+    <script>
+      const container = document.getElementById('app');
+      if (container.innerHTML.trim() === '') {
+          window.location.href = '/error';
+      }
+    </script>
+</body>
+</html>

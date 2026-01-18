@@ -1,35 +1,6 @@
-import pandas as pd
-messages = {}
-
-
-def read_raw():
-    lines = []
-    with open("input.txt", 'r',  encoding='utf-8') as fin:
-        lines = fin.readlines()
-    return lines
-
-
-def remove_timestamp(lines):
-    modified = []
-    for line in lines:
-        modified.append(line.partition('-')[2])
-    return modified
-
-
-def categorize(lines):
-    for line in lines:
-        name, _, message = line.partition(':')
-
-        if (not len(_)):
-            continue
-        
-        message = message.strip()
-        if name in messages:
-            messages[name].append(message)
-        else:
-            messages[name] = [message]
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sentence_transformers import SentenceTransformer, util
+from model.preprocessor import categorize
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
@@ -49,11 +20,12 @@ def classify_embedding(text):
         cat: util.cos_sim(emb, cat_emb).item()
         for cat, cat_emb in cat_embeddings.items()
     }
-    return max(scores, key=scores.get)
+    return max(scores, key=scores.get)  # type: ignore
 
 
-if __name__ == "__main__":
-    categorize(remove_timestamp(read_raw()))
+def process(lines):
+    messages = categorize(lines)
+    res = {}
     for person in messages:
         freq={"Gryffindor":0, "Ravenclaw":0, "Hufflepuff":0, "Slytherin":0}
         for message in messages[person]:
@@ -63,4 +35,5 @@ if __name__ == "__main__":
             if freq[h]==max_freq:
                 house=h
                 break
-        print(f"{person} : {house}")
+        res[person]=house  # type: ignore
+    return res

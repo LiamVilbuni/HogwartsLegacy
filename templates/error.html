@@ -1,0 +1,13 @@
+<div class="error-container">
+  <span class="error-icon">🚫</span>
+  <h1>Spell Failed!</h1>
+  <p class="error-msg">
+    The page you are looking for does not exist or an error occurred.
+  </p>
+  <p class="error-msg">Redirecting to safety in 3 seconds...</p>
+</div>
+<script>
+  setTimeout(() => {
+    window.location.href = "/chats";
+  }, 3000);
+</script>

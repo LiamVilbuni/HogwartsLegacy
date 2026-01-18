@@ -1,100 +1,138 @@
-{% extends "base.html" %} {% block content %}
-<div class="dashboard">
-  <div class="dash-header">
-    <div id="dropZone" style="border: 2px dashed #aaa; padding: 20px">
-      Drag & drop a .txt file here or click to upload
-    </div>
-
-    <input type="file" id="txtUpload" accept=".txt" hidden />
-  </div>
-
-  <div id="page-loader">
-    <div class="loader-content">
-      <img
-        src="{{ url_for('static', filename='assets/images/sortinghat.gif') }}"
-        alt="Sorting"
-      />
-    </div>
-  </div>
-
-  <div class="history-container">
-    <h2>Your Magical Archives</h2>
-    {% for chat in chats %}
-    <div class="chat-card">
-      <div class="chat-meta">
-        <span class="chat-icon">📜</span>
-        <div>
-          <h4>{{ chat[2] }}</h4>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hogwarts Legacy - Chats</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="brand" onclick="window.location.href='/'">Hogwarts Legacy</div>
+        <div class="nav-actions">
+            <button id="auth-btn" style="display: {{'none' if user_logged_in else 'block'}}" onclick="window.location.href='/auth/login'">Login</button>
+            <div id="user-avatar" class="avatar" title="Click to Logout" style="display: {{'block' if user_logged_in else 'none'}}">
+                <img src="{{user_avatar}}" onClick="window.location.href='/auth/logout'" alt="User Avatar">
+            </div>
         </div>
-      </div>
-      <div class="chat-actions">
-        <a href="/chats/{{ chat[1] }}" class="view-btn">View Result</a>
-        <a href="/chats/delete/{{ chat[1] }}" class="delete-btn">Delete</a>
-      </div>
+    </header>
+
+    <main id="app">
+        <section class="upload-section" id="drop-zone">
+            <h2>Submit Your Text File</h2>
+            <p style="margin: 1rem 0; color: var(--text-muted);">
+                Drag & Drop a .txt file here, or click to select.
+                <br><small>(Format: "Name: Message" or list of names)</small>
+            </p>
+            <input type="file" id="file-input" accept=".txt" style="display:none">
+            <button class="btn" onclick="document.getElementById('file-input').click()">Select File</button>
+        </section>
+
+        <section class="archive-section">
+            <h2>Archive</h2>
+            <div class="archive-list" id="archive-list">
+              {% for chat in archives %}
+                <div class="archive-item">
+                    <div>
+                        <h3>Analysis</h3>
+                        <div class="archive-meta">{{ chat[2] }}</div>
+                        <div class="archive-meta">{{ chat[3] }}</div>
+                        <div class="archive-meta">{{ chat[4] }} Members Sorted</div>
+                    </div>
+                    <button class="btn" style="margin-top:1rem; width:100%" 
+                        onclick="window.location.href = '/chats/{{ chat[1] }}'">
+                        View Results
+                    </button>
+                </div>
+              {% else %}
+                <p style="color:var(--text-muted)">No analyses archived yet.</p>
+              {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <div id="sorting-overlay">
+        <img src="{{ url_for('static', filename='assets/images/sortinghat.gif') }}" alt="Sorting Hat" class="sorting-gif">
+        <div class="sorting-text">The Hat is thinking...</div>
     </div>
-    {% endfor %}
-  </div>
-  <script>
-    const dropZone = document.getElementById("dropZone");
-    const input = document.getElementById("txtUpload");
-    const loader = document.getElementById("page-loader");
 
-    dropZone.onclick = () => input.click();
-
-    dropZone.ondragover = (e) => e.preventDefault();
-
-    dropZone.ondrop = (e) => {
-      e.preventDefault();
-      const file = e.dataTransfer.files[0];
-      if (file && file.name.endsWith(".txt")) {
-        input.files = e.dataTransfer.files;
-        dropZone.textContent = file.name;
-      } else {
-        alert("Please upload a .txt file only.");
+    <div id="toast">Message here</div>
+    <script>
+      const container = document.getElementById('archive-list');
+      
+      if (container.children.length === 0) {
+          container.innerHTML = `<p style="color:var(--text-muted)">No analyses archived yet.</p>`;
       }
-    };
 
-    input.addEventListener("change", () => {
-      const file = input.files[0];
-      if (!file) return;
+      const dropZone = document.getElementById('drop-zone');
+      const fileInput = document.getElementById('file-input');
 
-      dropZone.textContent = file.name;
+      dropZone.addEventListener('click', () => fileInput.click());
+      dropZone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          dropZone.classList.add('dragover');
+      });
 
-      console.log("File selected:", file);
+      dropZone.addEventListener('dragleave', (e) => {
+          e.preventDefault();
+          dropZone.classList.remove('dragover');
+      });
 
-      uploadFile(file);
-    });
-
-    function uploadFile(file) {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      loader.style.display = "flex";
-
-      fetch("/chats/analyse", {
-        method: "POST",
-        body: formData,
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error("Upload failed");
-          return res.json();
-        })
-        .then((data) => {
-          if (data.message === "Chat uploaded successfully") {
-            const chatId = data.chat_id;
-            window.location.href = `/chats/${chatId}`;
-          } else {
-            window.location.href = "/error.html";
+      dropZone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          dropZone.classList.remove('dragover');
+          const files = e.dataTransfer.files;
+          if (files.length) {
+              handleFile(files[0]);
           }
-        })
-        .catch((err) => {
-          console.error(err);
-          window.location.href = "/error.html";
-        })
-        .finally(() => {
-          loader.style.display = "none";
-        });
-    }
+      });
+
+      fileInput.addEventListener('change', (e) => {
+          if (fileInput.files.length) {
+              handleFile(fileInput.files[0]);
+          }
+      });
+
+      function handleFile(file) {
+          if (file.type !== 'text/plain') {
+              showToast('Please upload a valid .txt file.');
+              return;
+          }
+          console.log('Uploading file:', file);
+          
+          const formData = new FormData();
+          formData.append('file', file);
+
+          // Show sorting overlay
+          document.getElementById('sorting-overlay').style.display = 'flex';
+
+          fetch('/chats/analyse', {
+              method: 'POST',
+              body: formData
+          }).then(response => response.json())
+            .then(data => {
+              console.log(data);
+                if (data.success) {
+                    window.location.href = `/chats/${data.chat_id}`;
+                } else {
+                    document.getElementById('sorting-overlay').style.display = 'none';
+                    showToast('Analysis failed. Please try again.');
+                }
+            }).catch((err) => {
+              document.getElementById('sorting-overlay').style.display = 'none';  
+              console.log(err);
+              showToast('An error occurred. Please try again.');
+            });
+        }
+
+      const showToast = (msg) => {
+        const toast = document.getElementById("toast");
+        toast.textContent = msg;
+        toast.className = "show";
+        setTimeout(() => {
+          toast.className = toast.className.replace("show", "");
+        }, 3000);
+      };
   </script>
-</div>
-{% endblock %}
+</body>
+</html>
