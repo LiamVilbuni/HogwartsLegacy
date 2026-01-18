@@ -8,7 +8,6 @@
     --font-serif: 'Georgia', serif;
     --font-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     
-    /* House Colors */
     --gryffindor: #740001; --gryffindor-accent: #d3a625;
     --slytherin: #1a472a; --slytherin-accent: #aaaaaa;
     --ravenclaw: #0e1a40; --ravenclaw-accent: #946b2d;
@@ -27,7 +26,6 @@ body {
     overflow-x: hidden;
 }
 
-/* --- NAVBAR --- */
 header {
     background-color: #000;
     border-bottom: 2px solid var(--accent-gold);
@@ -79,7 +77,6 @@ header {
 
 .avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-/* --- MAIN LAYOUT --- */
 main {
     flex: 1;
     padding: 2rem;
@@ -103,7 +100,12 @@ h1, h2, h3 { font-family: var(--font-serif); margin-bottom: 1rem; }
 }
 .btn:hover { background-color: var(--accent-gold-hover); }
 
-/* --- HOME: HOUSE INFO --- */
+.btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
 .houses-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -128,7 +130,6 @@ h1, h2, h3 { font-family: var(--font-serif); margin-bottom: 1rem; }
 
 .house-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
 
-/* --- CHATS: UPLOAD & ARCHIVE --- */
 .upload-section {
     background: var(--card-bg);
     border: 2px dashed var(--text-muted);
@@ -159,7 +160,6 @@ h1, h2, h3 { font-family: var(--font-serif); margin-bottom: 1rem; }
 }
 .archive-meta { font-size: 0.85rem; color: var(--text-muted); margin: 0.5rem 0; }
 
-/* --- CHAT DETAIL: RESULTS --- */
 .detail-header { margin-bottom: 2rem; background: var(--card-bg); padding: 1.5rem; border-radius: 8px; }
 
 .sorting-animation-area { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
@@ -203,7 +203,6 @@ h1, h2, h3 { font-family: var(--font-serif); margin-bottom: 1rem; }
 .error-icon { font-size: 4rem; margin-bottom: 1rem; display: block; }
 .error-msg { font-size: 1.2rem; color: var(--text-muted); }
 
-/* --- SORTING OVERLAY --- */
 #sorting-overlay {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     background: rgba(0, 0, 0, 0.95);
@@ -235,7 +234,6 @@ h1, h2, h3 { font-family: var(--font-serif); margin-bottom: 1rem; }
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* --- TOAST --- */
 #toast {
     visibility: hidden; min-width: 250px; background-color: #333; color: #fff;
     text-align: center; border-radius: 4px; padding: 16px;

@@ -33,12 +33,10 @@ def addChat():
     for person, house in chat_analysis.items():
         if person.strip() == "": 
             continue
-        result[house].append(person)
-
-    print(result)
+        conf = house[1]
+        result[house[0]].append(person + f" ({conf:.2f}%)")
 
     add_chat(current_user.id, chat_id, chat_time, chat_name, chat_len, chat_data, json.dumps(result))
-    print("Chat added successfully")
     return jsonify({'success': True, 'message': 'Chat uploaded successfully', 'chat_id': chat_id}), 200
 
 @chats.route('/chats/delete/<chat_id>')
@@ -51,6 +49,4 @@ def delChat(chat_id):
 @login_required
 def listChat():
     chats = get_chats(current_user.id)
-    for chat in chats:
-        print(len(chat))
     return render_template('chats.html', user_logged_in=True, user_avatar = current_user.get_avatar(), archives=chats, current_user=current_user)

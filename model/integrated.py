@@ -27,12 +27,16 @@ def process(lines):
     res = {}
     for person in messages:
         freq={"Gryffindor":0, "Ravenclaw":0, "Hufflepuff":0, "Slytherin":0}
+        total = 0
         for message in messages[person]:
             freq[classify_embedding(message)]+=1
+            total += 1
         max_freq=max(freq.values())
         for h in freq:
             if freq[h]==max_freq:
                 house=h
                 break
-        res[person]=house  # type: ignore
+        percent = (max_freq/total)*100
+        res[person]=(house,  percent) # type: ignore
+
     return res
