@@ -54,4 +54,4 @@ A website that analyzes uploaded chat data from a whatsapp group and assigns eac
 - chat_analysis
 
 ### Model Structure
-    https://www.mit.edu/~ecprice/wordlist.10000
+- Sentence Transformer using all-MiniLM-L6-v2 model
