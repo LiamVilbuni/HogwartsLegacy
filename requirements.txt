@@ -1,7 +1,5 @@
 flask
 uuid
-pandas
-nltk
 flask_login
 requests
 oauthlib
